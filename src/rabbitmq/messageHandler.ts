@@ -35,12 +35,16 @@ export default class MessageHandler {
         break;
 
       case "get-course-wop": //without purchase
-        response = await controller.deleteCourse.bind(controller)(data);
+        response = await controller.getCourseWop.bind(controller)(data);
         break;
 
       case "get-all-courses":
         response = await controller.getAllCourses.bind(controller)();
         break;
+      
+        case "get-trending-courses":
+          response = await controller.getTrendingCourses.bind(controller)();
+          break;  
 
       default:
         response = "Request-key notfound";

@@ -53,4 +53,12 @@ export class CourseController {
       throw new NotFoundError()
     }
   }
+
+  getTrendingCourses = async () => {
+    try{
+      return this.service.getTrendingCourses()
+    }catch(e:any){
+      throw new NotFoundError()
+    }
+  }
 }

@@ -7,4 +7,5 @@ export interface ICourseRepository {
   deleteCourse(courseId: string): Promise<object | null> ;
   getCourseWop(courseId: string): Promise<Course | null>;
   getAllCourses(): Promise<Course[] | null>;
+  getTrendingCourses(): Promise<Course[] | null>;
 }
