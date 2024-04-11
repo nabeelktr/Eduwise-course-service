@@ -5,6 +5,25 @@ import CourseModel from "../model/schemas/course.schema";
 
 export class CourseRepository implements ICourseRepository {
 
+
+  async getCourseContent(courseId: string): Promise<Course | null> {
+   try {
+      const response = await CourseModel.findById(courseId)
+      return response;
+    } catch (e: any) {
+      throw new DBConnectionError();
+    }
+  }
+
+  async updatePurchaseCount(courseId: string): Promise<Object | null> {
+    try{
+      const response = await CourseModel.findByIdAndUpdate(courseId, {$inc:{purchased:1}})
+      return {success: true}
+    }catch(e:any){
+      throw new DBConnectionError()
+    }
+  }
+
   async getTrendingCourses(): Promise<any[] | null> {
     try{
       const response = await CourseModel.find().sort({purchased: -1}).limit(6).select("thumbnail purchased name description price")

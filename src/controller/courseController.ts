@@ -61,4 +61,21 @@ export class CourseController {
       throw new NotFoundError()
     }
   }
+
+  updatePurchaseCount = async (courseId: string) => {
+    try{
+      return this.service.updatePurchaseCount(courseId)
+    }catch(e:any){
+      throw new NotFoundError()
+    }
+  }
+
+  getCourseContent = async (courseId: string) => {
+    try{
+      return this.service.getCourseContent(courseId)
+    }catch(e:any){
+      console.log(e);
+    }
+  }
+
 }

@@ -5,6 +5,14 @@ import { Course } from "../model/course.entities";
 export class CourseService implements ICourseService {
   constructor(private repository: ICourseRepository) {}
 
+  getCourseContent(courseId: string): Promise<Course | null> {
+    return this.repository.getCourseWop(courseId);
+  }
+
+  updatePurchaseCount(courseId: string): Promise<Object | null> {
+    return this.repository.updatePurchaseCount(courseId)
+  }
+
   getTrendingCourses(): Promise<any[] | null> {
     return this.repository.getTrendingCourses()
   }

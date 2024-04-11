@@ -41,10 +41,18 @@ export default class MessageHandler {
       case "get-all-courses":
         response = await controller.getAllCourses.bind(controller)();
         break;
-      
-        case "get-trending-courses":
-          response = await controller.getTrendingCourses.bind(controller)();
-          break;  
+
+      case "get-trending-courses":
+        response = await controller.getTrendingCourses.bind(controller)();
+        break;
+
+      case "update-purchase-count":
+        response = await controller.updatePurchaseCount.bind(controller)(data);
+        break;
+
+      case "get-course-content":
+        response = await controller.getCourseContent.bind(controller)(data);
+        break;
 
       default:
         response = "Request-key notfound";
