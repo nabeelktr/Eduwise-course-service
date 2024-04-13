@@ -2,6 +2,34 @@ import mongoose, { Model, Schema } from "mongoose";
 import "dotenv/config";
 import { Course } from "../course.entities";
 
+
+
+const commentSchema = new Schema<any>(
+  {
+    user: Object,
+    question: String,
+    questionReplies: [Object],
+  },
+  {
+    timestamps: true,
+  }
+);
+
+const reviewSchema = new Schema<any>(
+  {
+    user: Object,
+    rating: {
+      type: Number,
+      default: 0,
+    },
+    comment: String,
+    commentReplies: [Object],
+  },
+  {
+    timestamps: true,
+  }
+);
+
 const CourseSchema: Schema<Course> = new Schema(
   {
     instructorId: { type: String, required: true },
@@ -25,18 +53,14 @@ const CourseSchema: Schema<Course> = new Schema(
         videoSection: String,
         links: [{ title: String, url: String }],
         suggestion: String,
+        questions: [commentSchema],
       },
     ],
     thumbnail: {
       type: String,
     },
-    reviews: [
-      {
-        user: String,
-        rating: Number,
-        comment: String,
-      },
-    ],
+    reviews: [reviewSchema],
+
     ratings: {
       type: Number,
       default: 0,

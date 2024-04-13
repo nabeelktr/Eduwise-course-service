@@ -4,11 +4,61 @@ import { Course } from "../model/course.entities";
 import CourseModel from "../model/schemas/course.schema";
 
 export class CourseRepository implements ICourseRepository {
+  async addReview(data: any): Promise<Object | null> {
+    try {
+      const course = await CourseModel.findById(data.courseId);
+      data.reviewList.user = {...data.reviewList.user, _id: data.userId}
+      course?.reviews?.push(data.reviewList);
+      let avg = 0;
+      course?.reviews?.forEach((rev: any) => {
+        avg += rev.rating;
+      });
+      if (course && course.reviews) {
+        course.ratings = avg / course.reviews.length;
+      }
+      await course?.save();
+      return { success: true };
+    } catch (e: any) {
+      console.log(e);
+      throw new DBConnectionError();
+    }
+  }
 
+  async addAnswer(data: any): Promise<Object | null> {
+    try {
+      const course = await CourseModel.findById(data.courseId);
+      const courseContent = course?.courseContentData?.find((item) =>
+        item._id.equals(data.contentId)
+      );
+      const question = courseContent?.questions.find((item: any) =>
+        item._id.equals(data.questionId)
+      );
+      question.questionReplies.push(data.answerList);
+      await course?.save();
+      return { success: true };
+    } catch (e: any) {
+      console.log(e);
+      throw new DBConnectionError();
+    }
+  }
+
+  async addQuestion(data: any): Promise<Object | null> {
+    try {
+      const course = await CourseModel.findById(data.courseId);
+      const courseContent = course?.courseContentData?.find((item) =>
+        item._id.equals(data.contentId)
+      );
+      courseContent?.questions.push(data.questionList);
+      await course?.save();
+      return { success: true };
+    } catch (e: any) {
+      throw new DBConnectionError();
+    }
+  }
 
   async getCourseContent(courseId: string): Promise<Course | null> {
-   try {
-      const response = await CourseModel.findById(courseId)
+    try {
+      const response = await CourseModel.findById(courseId);
       return response;
     } catch (e: any) {
       throw new DBConnectionError();
@@ -16,32 +66,39 @@ export class CourseRepository implements ICourseRepository {
   }
 
   async updatePurchaseCount(courseId: string): Promise<Object | null> {
-    try{
-      const response = await CourseModel.findByIdAndUpdate(courseId, {$inc:{purchased:1}})
-      return {success: true}
-    }catch(e:any){
-      throw new DBConnectionError()
+    try {
+      const response = await CourseModel.findByIdAndUpdate(courseId, {
+        $inc: { purchased: 1 },
+      });
+      return { success: true };
+    } catch (e: any) {
+      throw new DBConnectionError();
     }
   }
 
   async getTrendingCourses(): Promise<any[] | null> {
-    try{
-      const response = await CourseModel.find().sort({purchased: -1}).limit(6).select("thumbnail purchased name description price")
-      return response
-    }catch(e: any){
-      throw new DBConnectionError()
+    try {
+      const response = await CourseModel.find()
+        .sort({ purchased: -1 })
+        .limit(6)
+        .select("thumbnail purchased name description price");
+      return response;
+    } catch (e: any) {
+      throw new DBConnectionError();
     }
   }
 
   async getAllCourses(): Promise<Course[] | null> {
-    try{
-      const response = await CourseModel.find().select("-courseData.videoUrl -courseData.links")
-      return response
-    }catch(e: any){
-      throw new DBConnectionError()
+    try {
+      const response = await CourseModel.find().select(
+        "-courseData.videoUrl -courseData.links"
+      );
+      return response;
+    } catch (e: any) {
+      throw new DBConnectionError();
     }
   }
-  
+
   async getCourseWop(courseId: string): Promise<Course | null> {
     try {
       const response = await CourseModel.findById(courseId).select(
@@ -83,7 +140,7 @@ export class CourseRepository implements ICourseRepository {
   async createCourse(data: Course): Promise<object | null> {
     try {
       const course = await CourseModel.create(data);
-      return { success: true };
+      return course;
     } catch (e: any) {
       throw new DBConnectionError();
     }

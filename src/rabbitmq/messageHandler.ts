@@ -54,6 +54,18 @@ export default class MessageHandler {
         response = await controller.getCourseContent.bind(controller)(data);
         break;
 
+      case "add-question":
+        response = await controller.addQuestion.bind(controller)(data);
+        break;
+
+      case "add-answer":
+        response = await controller.addAnswer.bind(controller)(data);
+        break;
+
+      case "add-review":
+        response = await controller.addReview.bind(controller)(data);
+        break;
+
       default:
         response = "Request-key notfound";
         break;

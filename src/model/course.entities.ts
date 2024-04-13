@@ -55,12 +55,14 @@ interface Prerequisite {
 }
 
 interface CourseContentData {
+  _id?: any;
   videoUrl?: string;
   title: string;
   description: string;
   videoSection: string;
   links?: Links[];
   suggestion: string;
+  questions? :any;
 }
 
 interface Links {

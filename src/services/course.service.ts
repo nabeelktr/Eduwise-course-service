@@ -5,6 +5,18 @@ import { Course } from "../model/course.entities";
 export class CourseService implements ICourseService {
   constructor(private repository: ICourseRepository) {}
 
+  addReview(data: any): Promise<Object | null> {
+    return this.repository.addReview(data)
+  }
+
+  addAnswer(data: any): Promise<Object | null>{
+    return this.repository.addAnswer(data)
+  }
+
+  addQuestion(data: any): Promise<Object | null>{
+    return this.repository.addQuestion(data) 
+  }
+
   getCourseContent(courseId: string): Promise<Course | null> {
     return this.repository.getCourseWop(courseId);
   }

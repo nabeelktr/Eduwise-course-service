@@ -78,4 +78,28 @@ export class CourseController {
     }
   }
 
+  addQuestion = async (data: any) => {
+    try{
+      return this.service.addQuestion(data)
+    }catch(e:any){
+      console.log(e);
+    }
+  }
+
+  addAnswer = async (data: any) => {
+    try{
+      return this.service.addAnswer(data)
+    }catch(e:any){
+      console.log(e);
+    }
+  }
+
+  addReview = async (data: any) => {
+    try{
+      return this.service.addReview(data)
+    }catch(e:any){
+      console.log(e);
+    }
+  }
+  
 }
