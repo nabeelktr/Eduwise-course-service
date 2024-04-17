@@ -1,6 +1,7 @@
 import { Course } from "../model/course.entities";
 
 export interface ICourseService {
+  getCourseAnalytics(data: any): unknown;
   addReview(data: any): unknown;
   addAnswer(data: any): unknown;
   addQuestion(data: any): unknown;

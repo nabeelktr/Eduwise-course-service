@@ -40,6 +40,7 @@ const CourseSchema: Schema<Course> = new Schema(
     tags: { type: String, required: true },
     level: { type: String, required: true },
     demoUrl: { type: String, required: true },
+    category: {type: String},
     subtitleUrl: { type: String },
     totalVideos: { type: String, required: true },
     benefits: [{ title: String }],

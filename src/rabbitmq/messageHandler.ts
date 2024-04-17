@@ -15,7 +15,7 @@ export default class MessageHandler {
     replyTo: string
   ) {
     let response = data;
-    console.log("The operation is", operation, data);
+    console.log("The operation in course is", operation, data);
 
     switch (operation) {
       case "create-course":
@@ -64,6 +64,10 @@ export default class MessageHandler {
 
       case "add-review":
         response = await controller.addReview.bind(controller)(data);
+        break;
+
+      case "course-analytics":
+        response = await controller.getCourseAnalytics.bind(controller)(data);
         break;
 
       default:

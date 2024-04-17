@@ -1,6 +1,7 @@
 import { Course } from "../model/course.entities";
 
 export interface ICourseRepository {
+  getCourseAnalytics(data: any): Promise<Object[] | null>;
   addReview(data: any): Promise<Object | null>;
   addAnswer(data: any): Promise<Object | null>;
   addQuestion(data: any): Promise<Object | null>;

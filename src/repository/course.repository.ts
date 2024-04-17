@@ -4,10 +4,40 @@ import { Course } from "../model/course.entities";
 import CourseModel from "../model/schemas/course.schema";
 
 export class CourseRepository implements ICourseRepository {
+  async getCourseAnalytics(instructorId: any): Promise<Object[] | null> {
+    try {
+      const twelveMonthsAgo = new Date();
+      twelveMonthsAgo.setMonth(twelveMonthsAgo.getMonth() - 12);
+
+      const matchStage: any = {
+        $match: {
+          createdAt: { $gte: twelveMonthsAgo },
+        },
+      };
+      if (instructorId !== "admin") {
+        matchStage.$match.instructorId = instructorId;
+      }
+
+      const response = await CourseModel.aggregate([
+        matchStage,
+        {
+          $group: {
+            _id: { $dateToString: { format: "%Y-%m", date: "$createdAt" } },
+            count: { $sum: 1 },
+          },
+        },
+      ]);
+
+      return response || [];
+    } catch (e: any) {
+      throw new DBConnectionError();
+    }
+  }
+
   async addReview(data: any): Promise<Object | null> {
     try {
       const course = await CourseModel.findById(data.courseId);
-      data.reviewList.user = {...data.reviewList.user, _id: data.userId}
+      data.reviewList.user = { ...data.reviewList.user, _id: data.userId };
       course?.reviews?.push(data.reviewList);
       let avg = 0;
       course?.reviews?.forEach((rev: any) => {
@@ -19,7 +49,6 @@ export class CourseRepository implements ICourseRepository {
       await course?.save();
       return { success: true };
     } catch (e: any) {
-      console.log(e);
       throw new DBConnectionError();
     }
   }
