@@ -4,6 +4,7 @@ import { Course } from "../model/course.entities";
 import CourseModel from "../model/schemas/course.schema";
 
 export class CourseRepository implements ICourseRepository {
+  
   async getCourseAnalytics(instructorId: any): Promise<Object[] | null> {
     try {
       const twelveMonthsAgo = new Date();

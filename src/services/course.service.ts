@@ -2,7 +2,6 @@ import { ICourseService } from "../interfaces/iCourse";
 import { ICourseRepository } from "../interfaces/iCourse.Repository";
 import { Course } from "../model/course.entities";
 
-
 export class CourseService implements ICourseService {
   constructor(private repository: ICourseRepository) {}
 
@@ -12,29 +11,29 @@ export class CourseService implements ICourseService {
       const date = new Date();
       date.setMonth(date.getMonth() - i);
       months.push({
-        month: date.toLocaleString('default', { month: 'long' }),
-        value: date.toISOString().slice(0, 7) 
+        month: date.toLocaleString("default", { month: "long" }),
+        value: date.toISOString().slice(0, 7),
       });
     }
-    
+
     const response = await this.repository.getCourseAnalytics(instructorId);
     const aggregatedData: Record<string, number> = {};
     if (response) {
-      response.forEach(({ _id, count }:any) => {
+      response.forEach(({ _id, count }: any) => {
         aggregatedData[_id] = count;
       });
     } else {
-
       return null;
     }
-    
+
     const output: Object[] = months.map(({ month, value }) => ({
       month,
-      count: aggregatedData[value] || 0
+      count: aggregatedData[value] || 0,
     }));
-    
+
     return output;
   }
+
   addReview(data: any): Promise<Object | null> {
     return this.repository.addReview(data);
   }
