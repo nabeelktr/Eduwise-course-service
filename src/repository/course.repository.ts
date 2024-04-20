@@ -2,9 +2,43 @@ import { DBConnectionError } from "@nabeelktr/error-handler";
 import { ICourseRepository } from "../interfaces/iCourse.Repository";
 import { Course } from "../model/course.entities";
 import CourseModel from "../model/schemas/course.schema";
+import mongoose from "mongoose";
 
 export class CourseRepository implements ICourseRepository {
-  
+  async getUserCourses(courseIds: string[]): Promise<Course[] | null> {
+    try {
+      const courseObjectIds = courseIds
+        .map((id: any) => {
+          try {
+            return new mongoose.Types.ObjectId(id.courseId);
+          } catch (error) {
+            console.error(`Invalid ObjectId: ${id.courseId}`);
+            return null;
+          }
+        })
+        .filter((id) => id !== null);
+
+      const response = await CourseModel.find({
+        _id: { $in: courseObjectIds },
+      }).select("-courseData.videoUrl -courseData.links");
+      return response;
+    } catch (error) {
+      console.log(error);
+      throw new DBConnectionError();
+    }
+  }
+
+  async searchCourse(searchTerm: string): Promise<Course[] | null> {
+    try {
+      const courses = await CourseModel.find({
+        name: { $regex: searchTerm, $options: "i" },
+      }).select("name thumbnail description");
+      return courses;
+    } catch (error) {
+      throw new DBConnectionError();
+    }
+  }
+
   async getCourseAnalytics(instructorId: any): Promise<Object[] | null> {
     try {
       const twelveMonthsAgo = new Date();

@@ -109,5 +109,21 @@ export class CourseController {
       console.log(e);
     }
   };
+
+  searchCourses = async (searchTerm: string) => {
+    try{
+      return this.service.searchCourses(searchTerm)
+    }catch(e: any){
+      console.log(e);
+    }
+  };
+
+  getUserCourses = async (userIds: string[]) => {
+    try{
+      return this.service.getUserCourses(userIds)
+    }catch(e: any){
+      console.log(e);
+    }
+  }
   
 }

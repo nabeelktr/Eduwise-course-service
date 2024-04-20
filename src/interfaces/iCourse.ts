@@ -1,6 +1,8 @@
 import { Course } from "../model/course.entities";
 
 export interface ICourseService {
+  getUserCourses(userId: string[]): Promise<Course[] | null>;
+  searchCourses(searchTerm: string): Promise<Course[] | null>;
   getCourseAnalytics(data: any): unknown;
   addReview(data: any): unknown;
   addAnswer(data: any): unknown;

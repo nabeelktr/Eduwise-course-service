@@ -70,6 +70,14 @@ export default class MessageHandler {
         response = await controller.getCourseAnalytics.bind(controller)(data);
         break;
 
+      case "search-courses":
+        response = await controller.searchCourses.bind(controller)(data);
+        break;
+
+      case "get-user-courses":
+        response = await controller.getUserCourses.bind(controller)(data);
+        break;
+
       default:
         response = "Request-key notfound";
         break;

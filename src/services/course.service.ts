@@ -5,6 +5,14 @@ import { Course } from "../model/course.entities";
 export class CourseService implements ICourseService {
   constructor(private repository: ICourseRepository) {}
 
+  getUserCourses(userIds: string[]): Promise<Course[] | null> {
+    return this.repository.getUserCourses(userIds)
+  }
+
+  searchCourses(searchTerm: string): Promise<Course[] | null> {
+    return this.repository.searchCourse(searchTerm)
+  }
+
   async getCourseAnalytics(instructorId: string): Promise<Object[] | null> {
     const months: { month: string; value: string }[] = [];
     for (let i = 0; i < 12; i++) {

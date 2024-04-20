@@ -1,6 +1,8 @@
 import { Course } from "../model/course.entities";
 
 export interface ICourseRepository {
+  getUserCourses(userId: string[]): Promise<Course[] | null>;
+  searchCourse(searchTerm: string): Promise<Course[] | null>;
   getCourseAnalytics(data: any): Promise<Object[] | null>;
   addReview(data: any): Promise<Object | null>;
   addAnswer(data: any): Promise<Object | null>;
